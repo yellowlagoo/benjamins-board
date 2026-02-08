@@ -1,0 +1,127 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.landing-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 1100px;
+  width: 100%;
+  position: relative;
+}
+
+/* --- Ornate frame on the left --- */
+.landing-frame {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.landing-frame-wrapper {
+  position: relative;
+  width: 280px;
+  height: 300px;
+}
+
+.landing-frame-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.landing-frame-inner {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  right: 12%;
+  bottom: 12%;
+  background: linear-gradient(
+    135deg,
+    #f5e6f0 0%,
+    #fce4ec 30%,
+    #f8bbd0 50%,
+    #f5e6f0 70%,
+    #fce4ec 100%
+  );
+  z-index: -1;
+}
+
+.landing-frame-flowers {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 40%, #e91e6333 0%, transparent 40%),
+    radial-gradient(circle at 60% 30%, #f4849933 0%, transparent 35%),
+    radial-gradient(circle at 45% 65%, #e91e6322 0%, transparent 40%),
+    radial-gradient(circle at 70% 60%, #f4849922 0%, transparent 35%),
+    radial-gradient(circle at 25% 70%, #e91e6318 0%, transparent 30%);
+}
+
+/* --- Title/goose image on the right --- */
+.landing-title-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -30px;
+}
+
+.landing-goose-img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* --- Enter prompt --- */
+.landing-enter {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #999;
+  letter-spacing: 0.15em;
+  animation: fadeInOut 3s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .landing-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .landing-frame-wrapper {
+    width: 180px;
+    height: 200px;
+  }
+
+  .landing-title-area {
+    margin-left: 0;
+  }
+
+  .landing-goose-img {
+    max-width: 340px;
+  }
+}
