@@ -1,52 +1,111 @@
+/* ================================================================================
+   LANDING PAGE - CSS GRID LAYOUT MASTER REFERENCE
+   ================================================================================
+
+   GRID STRUCTURE:
+   - Total: 3 columns × 4 rows
+   - Takes up full viewport height (100vh)
+
+   COLUMN BREAKDOWN:
+   - Column 1: ~33.33% of viewport width (left third)
+   - Column 2: ~33.33% of viewport width (center third)
+   - Column 3: ~33.33% of viewport width (right third)
+
+   ROW BREAKDOWN:
+   - Row 1: ~25% of viewport height (top quarter)
+   - Row 2: ~25% of viewport height (second quarter)
+   - Row 3: ~25% of viewport height (third quarter)
+   - Row 4: ~25% of viewport height (bottom quarter)
+
+   VISUAL LAYOUT:
+   ┌─────────────┬─────────────┬─────────────┐
+   │  Column 1   │  Column 2   │  Column 3   │ Row 1
+   │   [Frame────────────────]  │             │
+   ├─────────────┼─────────────┼─────────────┤
+   │   [Frame────────────────]  │             │ Row 2
+   │      │      │  [Benjamin's text/goose──►│
+   ├─────────────┼─────────────┼─────────────┤
+   │             │      │       │      │      │ Row 3
+   │             │  [Benjamin's text/goose──►│
+   ├─────────────┼─────────────┼─────────────┤
+   │             │      │       │      │      │ Row 4
+   │             │  [Benjamin's text/goose──►│
+   └─────────────┴─────────────┴─────────────┘
+
+   ================================================================================ */
+
+/* =========================
+   LANDING CONTAINER
+   Grid container definition
+   ========================= */
 .landing {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background: #ffffff;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  padding: 2rem;
+
+  /* CSS Grid setup: 3 columns × 4 rows */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
+  grid-template-rows: repeat(4, 1fr);     /* 4 equal rows */
 }
 
-.landing-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
-}
-
-/* --- Ornate frame on the left --- */
+/* =========================
+   ORNATE GOLD FRAME (frameMet.png)
+   Grid: columns 1-2, rows 1-3
+   Element: Decorative vintage gold picture frame with empty/transparent center
+   ========================= */
 .landing-frame {
-  flex-shrink: 0;
+  /* GRID POSITIONING */
+  grid-column: 1 / 3;  /* spans from column line 1 to 3 (covers columns 1 and 2) */
+  grid-row: 1 / 4;     /* spans from row line 1 to 4 (covers rows 1, 2, and 3) */
+
+  /* LAYOUT & ALIGNMENT */
+  display: flex;
+  align-items: center;      /* centers frame vertically within grid area */
+  justify-content: center;  /* centers frame horizontally within grid area */
+
+  /* STACKING */
   position: relative;
-  z-index: 1;
+  z-index: 1;  /* appears above the Benjamin's text behind it */
+
+  /* MANUAL POSITIONING ADJUSTMENTS (if needed):
+     - To shift frame left/right: add padding-left or padding-right
+     - To shift frame up/down: add padding-top or padding-bottom
+     - To resize frame area: modify grid-column or grid-row spans
+     - To fine-tune alignment: adjust align-items or justify-content */
 }
 
+/* Frame image wrapper - controls actual frame size */
 .landing-frame-wrapper {
   position: relative;
-  width: 280px;
-  height: 300px;
+  width: 80%;           /* frame is 80% of its grid area width */
+  max-width: 450px;     /* won't exceed 450px even on large screens */
+  aspect-ratio: 1.1 / 1; /* maintains frame proportions (slightly wider than tall) */
+
+  /* MANUAL ADJUSTMENTS:
+     - To make frame larger: increase width percentage
+     - To make frame smaller: decrease width percentage
+     - To change max size: adjust max-width value */
 }
 
+/* Frame image itself */
 .landing-frame-img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: contain;  /* preserves frame image aspect ratio */
 }
 
+/* Decorative gradient background inside frame */
+/* 
 .landing-frame-inner {
   position: absolute;
-  top: 12%;
-  left: 12%;
-  right: 12%;
-  bottom: 12%;
+  top: 12%;     
+  left: 12%;   
+  right: 12%;   
+  bottom: 12%;  
   background: linear-gradient(
     135deg,
     #f5e6f0 0%,
@@ -55,10 +114,12 @@
     #f5e6f0 70%,
     #fce4ec 100%
   );
-  z-index: -1;
+  z-index: 2;  
 }
+*/ 
 
-.landing-frame-flowers {
+/* Decorative flower pattern overlay inside frame */
+/* .landing-frame-flowers {
   width: 100%;
   height: 100%;
   background: radial-gradient(circle at 30% 40%, #e91e6333 0%, transparent 40%),
@@ -66,62 +127,140 @@
     radial-gradient(circle at 45% 65%, #e91e6322 0%, transparent 40%),
     radial-gradient(circle at 70% 60%, #f4849922 0%, transparent 35%),
     radial-gradient(circle at 25% 70%, #e91e6318 0%, transparent 30%);
-}
+} */
 
-/* --- Title/goose image on the right --- */
+/* =========================
+   BENJAMIN'S BOARD TEXT + GOOSE (landingGoose.png)
+   Grid: all 3 columns (1-3), rows 2-4
+   Element: Cursive script text "Benjamin's" with goose illustration and "BOARD" text
+   Key positioning: Starts 1/4 into column 1, extends across bottom 3 rows
+   ========================= */
 .landing-title-area {
-  flex: 1;
+  /* GRID POSITIONING */
+  grid-column: 1 / 4;  /* spans from column line 1 to 4 (all 3 columns) */
+  grid-row: 2 / 5;     /* spans from row line 2 to 5 (rows 2, 3, and 4) */
+
+  /* LAYOUT & ALIGNMENT */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -30px;
+  align-items: center;         /* vertically centers content */
+  justify-content: flex-start; /* aligns content to left side */
+
+  /* STACKING */
+  position: relative;
+  z-index: 0;  /* appears behind the ornate frame (frame is z-index: 2) */
+
+  /* HORIZONTAL POSITIONING */
+  padding-left: 20%; /* Starts 1/4 into column 1 (1/4 of 33.33% = 8.33%) */
+
+  /* MANUAL POSITIONING ADJUSTMENTS:
+     - To shift text/goose left: decrease padding-left
+     - To shift text/goose right: increase padding-left
+     - To shift up/down: add padding-top or padding-bottom
+     - To change vertical alignment: modify align-items (flex-start, center, flex-end)
+     - To extend into different rows: modify grid-row values
+     - To adjust horizontal span: modify grid-column values */
 }
 
+/* The actual image containing Benjamin's text and goose */
 .landing-goose-img {
-  width: 100%;
-  max-width: 700px;
-  height: auto;
+  width: 200%;          /* fills available width */
+  max-width: 1000px;     /* won't exceed 900px */
+  height: auto;         /* maintains aspect ratio */
   display: block;
-  user-select: none;
-  -webkit-user-drag: none;
+  user-select: none;    /* prevents text selection */
+  -webkit-user-drag: none; /* prevents image dragging */
+
+  /* MANUAL ADJUSTMENTS:
+     - To make text/goose larger: increase max-width
+     - To make text/goose smaller: decrease max-width
+     - To set absolute width: change width from 100% to px value */
 }
 
-/* --- Enter prompt --- */
+/* Wrapper element (uses CSS subgrid technique) */
+.landing-content {
+  display: contents;  /* makes children direct participants in parent grid */
+}
+
+/* =========================
+   "CLICK ANYWHERE TO ENTER" PROMPT
+   Positioning: Absolute (bottom center, outside grid)
+   Element: Animated text prompt for user interaction
+   ========================= */
 .landing-enter {
+  /* POSITIONING (absolute, not grid-based) */
   position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 3rem;           /* 3rem from bottom of viewport */
+  left: 50%;              /* start at horizontal center */
+  transform: translateX(-50%); /* shift back by half own width to center perfectly */
+
+  /* TYPOGRAPHY */
   font-family: var(--font-body);
   font-style: italic;
   font-size: 0.95rem;
-  color: #999;
   letter-spacing: 0.15em;
+  color: #999;
+
+  /* ANIMATION */
   animation: fadeInOut 3s ease-in-out infinite;
+
+  /* MANUAL POSITIONING ADJUSTMENTS:
+     - To move up: increase bottom value
+     - To move down: decrease bottom value
+     - To move left: add negative margin-left
+     - To move right: add positive margin-left
+     - To make text larger: increase font-size
+     - To change fade speed: adjust animation duration (3s) */
 }
 
+/* Fade in/out animation for enter prompt */
 @keyframes fadeInOut {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.3; }  /* starts and ends at 30% opacity */
+  50% { opacity: 1; }         /* peaks at 100% opacity halfway through */
 }
 
-/* --- Responsive --- */
+/* ================================================================================
+   RESPONSIVE BREAKPOINTS
+   ================================================================================ */
+
+/* =========================
+   MOBILE LAYOUT (screens ≤ 768px)
+   Grid changes to: 1 column × 2 rows (auto-sized)
+   ========================= */
 @media (max-width: 768px) {
-  .landing-content {
-    flex-direction: column;
-    gap: 1.5rem;
+  /* GRID STRUCTURE - Mobile */
+  .landing {
+    grid-template-columns: 1fr;      /* single column */
+    grid-template-rows: auto auto;   /* 2 auto-sized rows */
+    padding: 2rem 1rem;
+
+    /* MANUAL ADJUSTMENTS:
+       - To add more vertical space: increase padding values
+       - To make tighter: decrease padding values */
   }
 
+  /* FRAME - Mobile positioning */
+  .landing-frame {
+    grid-column: 1;          /* occupies single column */
+    grid-row: 1;             /* top row */
+    justify-content: center; /* centers frame horizontally */
+  }
+
+  /* FRAME SIZE - Mobile */
   .landing-frame-wrapper {
-    width: 180px;
-    height: 200px;
+    width: 60%;          /* smaller on mobile */
+    max-width: 250px;    /* capped at 250px */
   }
 
+  /* TEXT/GOOSE - Mobile positioning */
   .landing-title-area {
-    margin-left: 0;
+    grid-column: 1;          /* occupies single column */
+    grid-row: 2;             /* bottom row */
+    padding-left: 0;         /* remove left offset on mobile */
+    justify-content: center; /* centers content */
   }
 
+  /* TEXT/GOOSE SIZE - Mobile */
   .landing-goose-img {
-    max-width: 340px;
+    max-width: 400px;    /* smaller max width on mobile */
   }
 }
