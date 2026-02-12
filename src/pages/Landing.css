@@ -1,266 +1,256 @@
 /* ================================================================================
-   LANDING PAGE - CSS GRID LAYOUT MASTER REFERENCE
+   LANDING PAGE
    ================================================================================
+   Optimized for ~1400×700 viewport.
 
-   GRID STRUCTURE:
-   - Total: 3 columns × 4 rows
-   - Takes up full viewport height (100vh)
-
-   COLUMN BREAKDOWN:
-   - Column 1: ~33.33% of viewport width (left third)
-   - Column 2: ~33.33% of viewport width (center third)
-   - Column 3: ~33.33% of viewport width (right third)
-
-   ROW BREAKDOWN:
-   - Row 1: ~25% of viewport height (top quarter)
-   - Row 2: ~25% of viewport height (second quarter)
-   - Row 3: ~25% of viewport height (third quarter)
-   - Row 4: ~25% of viewport height (bottom quarter)
-
-   VISUAL LAYOUT:
-   ┌─────────────┬─────────────┬─────────────┐
-   │  Column 1   │  Column 2   │  Column 3   │ Row 1
-   │   [Frame────────────────]  │             │
-   ├─────────────┼─────────────┼─────────────┤
-   │   [Frame────────────────]  │             │ Row 2
-   │      │      │  [Benjamin's text/goose──►│
-   ├─────────────┼─────────────┼─────────────┤
-   │             │      │       │      │      │ Row 3
-   │             │  [Benjamin's text/goose──►│
-   ├─────────────┼─────────────┼─────────────┤
-   │             │      │       │      │      │ Row 4
-   │             │  [Benjamin's text/goose──►│
-   └─────────────┴─────────────┴─────────────┘
-
+   LAYOUT:
+   ┌────────────────────────────────────────────────┐
+   │                                                │
+   │  [Frame+Art]                       [Bird]      │  top ~30%, inline
+   │   ~6% left                        ~6% right    │
+   │                                                │
+   │                                                │
+   │                      BOARD                     │
+   │                            Benjamin's  ──►│    │  bottom-right
+   └────────────────────────────────────────────────┘
    ================================================================================ */
 
-/* =========================
-   LANDING CONTAINER
-   Grid container definition
-   ========================= */
 .landing {
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background: #ffffff;
   cursor: pointer;
-  position: relative;
   overflow: hidden;
-
-  /* CSS Grid setup: 3 columns × 4 rows */
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
-  grid-template-rows: repeat(4, 1fr);     /* 4 equal rows */
+  position: relative;
 }
 
 /* =========================
-   ORNATE GOLD FRAME (frameMet.png)
-   Grid: columns 1-2, rows 1-3
-   Element: Decorative vintage gold picture frame with empty/transparent center
+   IMAGES: Frame (left) + Bird (right)
    ========================= */
-.landing-frame {
-  /* GRID POSITIONING */
-  grid-column: 1 / 3;  /* spans from column line 1 to 3 (covers columns 1 and 2) */
-  grid-row: 1 / 4;     /* spans from row line 1 to 4 (covers rows 1, 2, and 3) */
+.landing-images {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  height: 50vh;
 
-  /* LAYOUT & ALIGNMENT */
   display: flex;
-  align-items: center;      /* centers frame vertically within grid area */
-  justify-content: center;  /* centers frame horizontally within grid area */
+  align-items: center;
+  justify-content: space-between;
 
-  /* STACKING */
-  position: relative;
-  z-index: 1;  /* appears above the Benjamin's text behind it */
-
-  /* MANUAL POSITIONING ADJUSTMENTS (if needed):
-     - To shift frame left/right: add padding-left or padding-right
-     - To shift frame up/down: add padding-top or padding-bottom
-     - To resize frame area: modify grid-column or grid-row spans
-     - To fine-tune alignment: adjust align-items or justify-content */
+  padding-left: 6%;
+  padding-right: 6%;
 }
 
-/* Frame image wrapper - controls actual frame size */
-.landing-frame-wrapper {
+/* =========================
+   FRAME CONTAINER
+   Holds the artwork, overlay, and frame image in layers.
+   Frame image is on top so its ornate border overlaps artwork edges.
+   ========================= */
+.landing-frame-container {
   position: relative;
-  width: 80%;           /* frame is 80% of its grid area width */
-  max-width: 450px;     /* won't exceed 450px even on large screens */
-  aspect-ratio: 1.1 / 1; /* maintains frame proportions (slightly wider than tall) */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make frame larger: increase width percentage
-     - To make frame smaller: decrease width percentage
-     - To change max size: adjust max-width value */
+  width: 462px;
+  /* aspect-ratio matches the frame image proportions */
+  aspect-ratio: 1.1 / 1;
+  flex-shrink: 0;
 }
 
-/* Frame image itself */
+/* Frame image — top layer, covers artwork edges */
 .landing-frame-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;  /* preserves frame image aspect ratio */
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 3;
+  pointer-events: none;
 }
-
-/* Decorative gradient background inside frame */
-/* 
-.landing-frame-inner {
-  position: absolute;
-  top: 12%;     
-  left: 12%;   
-  right: 12%;   
-  bottom: 12%;  
-  background: linear-gradient(
-    135deg,
-    #f5e6f0 0%,
-    #fce4ec 30%,
-    #f8bbd0 50%,
-    #f5e6f0 70%,
-    #fce4ec 100%
-  );
-  z-index: 2;  
-}
-*/ 
-
-/* Decorative flower pattern overlay inside frame */
-/* .landing-frame-flowers {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 40%, #e91e6333 0%, transparent 40%),
-    radial-gradient(circle at 60% 30%, #f4849933 0%, transparent 35%),
-    radial-gradient(circle at 45% 65%, #e91e6322 0%, transparent 40%),
-    radial-gradient(circle at 70% 60%, #f4849922 0%, transparent 35%),
-    radial-gradient(circle at 25% 70%, #e91e6318 0%, transparent 30%);
-} */
 
 /* =========================
-   BENJAMIN'S BOARD TEXT + GOOSE (landingGoose.png)
-   Grid: all 3 columns (1-3), rows 2-4
-   Element: Cursive script text "Benjamin's" with goose illustration and "BOARD" text
-   Key positioning: Starts 1/4 into column 1, extends across bottom 3 rows
+   ARTWORK IMAGE
+   Positioned inside the frame's inner border area.
+   ~14% inset from each edge to sit within the ornate border.
    ========================= */
-.landing-title-area {
-  /* GRID POSITIONING */
-  grid-column: 1 / 4;  /* spans from column line 1 to 4 (all 3 columns) */
-  grid-row: 2 / 5;     /* spans from row line 2 to 5 (rows 2, 3, and 4) */
+.landing-artwork-img {
+  position: absolute;
+  top: 14%;
+  left: 13%;
+  right: 13%;
+  bottom: 11%;
+  width: calc(100% - 26%);
+  height: calc(100% - 25%);
+  object-fit: cover;
+  z-index: 1;
 
-  /* LAYOUT & ALIGNMENT */
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.landing-artwork-img.loaded {
+  opacity: 1;
+}
+
+/* =========================
+   LOADING INDICATOR
+   Subtle pulsing dot inside the frame canvas area.
+   ========================= */
+.landing-artwork-loading {
+  position: absolute;
+  top: 14%;
+  left: 13%;
+  right: 13%;
+  bottom: 11%;
+  z-index: 2;
+
   display: flex;
-  align-items: center;         /* vertically centers content */
-  justify-content: flex-start; /* aligns content to left side */
-
-  /* STACKING */
-  position: relative;
-  z-index: 0;  /* appears behind the ornate frame (frame is z-index: 2) */
-
-  /* HORIZONTAL POSITIONING */
-  padding-left: 20%; /* Starts 1/4 into column 1 (1/4 of 33.33% = 8.33%) */
-
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To shift text/goose left: decrease padding-left
-     - To shift text/goose right: increase padding-left
-     - To shift up/down: add padding-top or padding-bottom
-     - To change vertical alignment: modify align-items (flex-start, center, flex-end)
-     - To extend into different rows: modify grid-row values
-     - To adjust horizontal span: modify grid-column values */
+  align-items: center;
+  justify-content: center;
 }
 
-/* The actual image containing Benjamin's text and goose */
-.landing-goose-img {
-  width: 200%;          /* fills available width */
-  max-width: 1000px;     /* won't exceed 900px */
-  height: auto;         /* maintains aspect ratio */
-  display: block;
-  user-select: none;    /* prevents text selection */
-  -webkit-user-drag: none; /* prevents image dragging */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make text/goose larger: increase max-width
-     - To make text/goose smaller: decrease max-width
-     - To set absolute width: change width from 100% to px value */
+.landing-artwork-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #c4a96a;
+  animation: artworkPulse 1.5s ease-in-out infinite;
 }
 
-/* Wrapper element (uses CSS subgrid technique) */
-.landing-content {
-  display: contents;  /* makes children direct participants in parent grid */
+@keyframes artworkPulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 0.6; transform: scale(1); }
 }
 
 /* =========================
-   "CLICK ANYWHERE TO ENTER" PROMPT
-   Positioning: Absolute (bottom center, outside grid)
-   Element: Animated text prompt for user interaction
+   HOVER OVERLAY
+   Semi-transparent info overlay, clipped to artwork area.
    ========================= */
-.landing-enter {
-  /* POSITIONING (absolute, not grid-based) */
+.landing-artwork-overlay {
   position: absolute;
-  bottom: 3rem;           /* 3rem from bottom of viewport */
-  left: 50%;              /* start at horizontal center */
-  transform: translateX(-50%); /* shift back by half own width to center perfectly */
+  top: 14%;
+  left: 13%;
+  right: 13%;
+  bottom: 11%;
+  z-index: 2;
 
-  /* TYPOGRAPHY */
-  font-family: var(--font-body);
+  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  cursor: default;
+}
+
+.landing-frame-container:hover .landing-artwork-overlay {
+  opacity: 1;
+}
+
+.landing-artwork-info {
+  padding: 12% 10%;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Title row */
+.landing-artwork-info-title {
+  margin-bottom: 10px;
+}
+
+.landing-artwork-info-title-text {
+  font-family: 'Luxurious Roman', serif;
+  font-size: 21px;
+  color: #ffffff;
+  line-height: 1.25;
+  display: block;
+}
+
+/* Standard info rows */
+.landing-artwork-info-row {
+  margin-bottom: 4px;
+}
+
+.landing-artwork-info-label {
+  font-family: 'Luxurious Roman', serif;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.landing-artwork-info-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.3;
+  display: block;
+}
+
+/* Bio line (no label, directly under artist) */
+.landing-artwork-info-bio {
+  margin-top: -2px;
+  margin-bottom: 6px;
+}
+
+.landing-artwork-info-bio .landing-artwork-info-value {
   font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.15em;
-  color: #999;
-
-  /* ANIMATION */
-  animation: fadeInOut 3s ease-in-out infinite;
-
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To move up: increase bottom value
-     - To move down: decrease bottom value
-     - To move left: add negative margin-left
-     - To move right: add positive margin-left
-     - To make text larger: increase font-size
-     - To change fade speed: adjust animation duration (3s) */
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.65);
 }
-
-/* Fade in/out animation for enter prompt */
-@keyframes fadeInOut {
-  0%, 100% { opacity: 0.3; }  /* starts and ends at 30% opacity */
-  50% { opacity: 1; }         /* peaks at 100% opacity halfway through */
-}
-
-/* ================================================================================
-   RESPONSIVE BREAKPOINTS
-   ================================================================================ */
 
 /* =========================
-   MOBILE LAYOUT (screens ≤ 768px)
-   Grid changes to: 1 column × 2 rows (auto-sized)
+   GOOSE / BIRD
    ========================= */
-@media (max-width: 768px) {
-  /* GRID STRUCTURE - Mobile */
-  .landing {
-    grid-template-columns: 1fr;      /* single column */
-    grid-template-rows: auto auto;   /* 2 auto-sized rows */
-    padding: 2rem 1rem;
+.landing-goose-img {
+  width: 420px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
 
-    /* MANUAL ADJUSTMENTS:
-       - To add more vertical space: increase padding values
-       - To make tighter: decrease padding values */
-  }
+/* =========================
+   BOTTOM-RIGHT: Text lockup
+   ========================= */
+.landing-text {
+  position: absolute;
+  bottom: 3vh;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 10;
+}
 
-  /* FRAME - Mobile positioning */
-  .landing-frame {
-    grid-column: 1;          /* occupies single column */
-    grid-row: 1;             /* top row */
-    justify-content: center; /* centers frame horizontally */
-  }
+.landing-text-benjamins {
+  font-family: 'Ballet', cursive;
+  font-size: 240px;
+  color: #1a1a1a;
+  line-height: 0.85;
+  letter-spacing: 0.01em;
+  user-select: none;
+  white-space: nowrap;
+}
 
-  /* FRAME SIZE - Mobile */
-  .landing-frame-wrapper {
-    width: 60%;          /* smaller on mobile */
-    max-width: 250px;    /* capped at 250px */
-  }
-
-  /* TEXT/GOOSE - Mobile positioning */
-  .landing-title-area {
-    grid-column: 1;          /* occupies single column */
-    grid-row: 2;             /* bottom row */
-    padding-left: 0;         /* remove left offset on mobile */
-    justify-content: center; /* centers content */
-  }
-
-  /* TEXT/GOOSE SIZE - Mobile */
-  .landing-goose-img {
-    max-width: 400px;    /* smaller max width on mobile */
-  }
+.landing-text-board {
+  font-family: 'Luxurious Roman', serif;
+  font-weight: 400;
+  font-size: 140px;
+  color: #1a1a1a;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  user-select: none;
+  margin-top: -20px;
+  align-self: flex-start;
+  margin-left: -80px;
 }

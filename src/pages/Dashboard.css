@@ -1,200 +1,75 @@
 /* ================================================================================
-   DASHBOARD - CSS GRID LAYOUT MASTER REFERENCE
+   DASHBOARD - ABSOLUTE POSITIONING LAYOUT
    ================================================================================
 
-   GRID STRUCTURE:
-   - Total: 3 columns × 4 rows
-   - Takes up full viewport height (100vh)
-   - Gap between cells: 1rem
-
-   COLUMN BREAKDOWN:
-   - Column 1: ~33.33% of viewport width (left third)
-   - Column 2: ~33.33% of viewport width (center third)
-   - Column 3: ~33.33% of viewport width (right third)
-
-   ROW BREAKDOWN:
-   - Row 1: ~25% of viewport height (top quarter)
-   - Row 2: ~25% of viewport height (second quarter)
-   - Row 3: ~25% of viewport height (third quarter)
-   - Row 4: ~25% of viewport height (bottom quarter)
+   All elements are absolutely positioned inside a 100vw × 100vh container.
+   Coordinates are percentage-based for proportional scaling.
 
    VISUAL LAYOUT:
-   ┌─────────────┬─────────────┬─────────────┐
-   │  Column 1   │  Column 2   │  Column 3   │ Row 1
-   │ [Love Note──│─Sun Feb 8─] │ [Blossom──] │
-   │      │      │             │      │      │
-   ├─────────────┼─────────────┼─────────────┤
-   │ [Love Note──│             │             │ Row 2
-   │      │]     │ [Weather──] │ [Pic of us──│
-   ├─────────────┼─────────────┼─────────────┤
-   │             │             │             │ Row 3
-   │   [Game]    │ [Weather──] │ [Pic of us──│
-   ├─────────────┼─────────────┼─────────────┤
-   │             │      │      │      │      │ Row 4
-   │             │ [Weather──] │ [Pic of us──│ (frames stop at 3/4 mark)
-   └─────────────┴─────────────┴─────────────┘
-
-   ELEMENT POSITIONS SUMMARY:
-   - Love Note: Column 1, Rows 1-2
-   - Game: Column 1, Row 3
-   - Date: Column 2, Row 1
-   - Weather: Column 2, Rows 2-4
-   - Pic of us: Column 3, Rows 2-4
-   - Cherry Blossom: Column 3, Row 1
+   ┌────────────────────────────────────────────────────────┐
+   │ [Love Note]      [Date]              [Cherry Blossom] │
+   │  top:3% left:2%   top:3% left:33%     top:0 right:0  │
+   │  w:26% h:42%      w:30%               w:22%          │
+   │                                       [Pic of us]    │
+   │                  [Weather]             top:12% r:3%   │
+   │                   top:22% left:32%     w:24% h:42%   │
+   │                   w:28% h:55%                        │
+   │ [Game]                                               │
+   │  top:52% left:2%                      [Us in HMB]   │
+   │  w:26% h:42%                          top:62% r:3%  │
+   │                                       w:22% h:32%   │
+   └────────────────────────────────────────────────────────┘
 
    ================================================================================ */
 
 /* =========================
    DASHBOARD CONTAINER
-   Grid container definition
    ========================= */
 .dashboard {
-  min-height: 100vh;
-  background: #ffffff;
   position: relative;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-
-  /* CSS Grid setup: 3 columns × 4 rows */
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* 3 equal columns */
-  grid-template-rows: repeat(4, 1fr);
-  /* 4 equal rows */
-  padding: 2rem;
-  /* space around entire grid */
-  gap: 0rem;
-  /* space between grid cells */
-
-  /* MANUAL ADJUSTMENTS:
-     - To increase spacing between frames: increase gap value
-     - To decrease spacing: decrease gap value
-     - To add more edge padding: increase padding value
-     - To make grid taller: change min-height */
+  background: #ffffff;
 }
 
 /* =========================
-   DATE DISPLAY (e.g., "Sun Feb 8")
-   Grid: column 2, row 1
-   Element: Current date in bold serif font, centered in top-middle cell
+   DATE DISPLAY
    ========================= */
 .dashboard-date {
-  /* GRID POSITIONING */
-  grid-column: 2;
-  /* occupies column 2 (center column) */
-  grid-row: 1;
-  /* occupies row 1 (top row) */
-
-  /* LAYOUT & ALIGNMENT */
-  display: flex;
-  align-items: center;
-  /* vertically centers text */
-  justify-content: center;
-  /* horizontally centers text */
-
-  /* TYPOGRAPHY */
-  font-family: "Mr Bedfort", cursive;
-  /* Mr Bedfort cursive font */
-  font-weight: 400;
-  /* regular weight */
-  font-size: 3rem;
-  /* large text */
-  color: var(--color-text);
+  position: absolute;
+  top: 10%;
+  left: 33%;
+  width: 30%;
   text-align: center;
-  letter-spacing: 0.02em;
 
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To shift left: add padding-right or justify-content: flex-start
-     - To shift right: add padding-left or justify-content: flex-end
-     - To shift up: add padding-bottom or align-items: flex-start
-     - To shift down: add padding-top or align-items: flex-end
-     - To make text larger: increase font-size
-     - To make text smaller: decrease font-size
-     - To change weight: adjust font-weight (100-900) */
+  font-family: "Ballet", cursive;
+  font-weight: 400;
+  font-size: 5rem;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
 }
 
 /* =========================
-   CHERRY BLOSSOM DECORATION (cherryBlossom.png)
-   Grid: column 3, row 1 (extends ~15% into row 2 via negative margin)
-   Element: Pink cherry blossom branch in top-right corner
+   CHERRY BLOSSOM
    ========================= */
 .dashboard-blossom {
-  /* GRID POSITIONING */
-  grid-column: 3;
-  /* occupies column 3 (right column) */
-  grid-row: 1 / 2;
-  /* primarily in row 1, but extends downward */
-
-  /* SIZE & FIT */
-  width: 100%;
-  /* fills grid cell width */
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34.3%;
   height: auto;
-  /* maintains aspect ratio */
   object-fit: contain;
-  /* fits within cell without distortion */
-  object-position: top right;
-  /* anchors to top-right corner */
-
-  /* ALIGNMENT WITHIN GRID CELL */
-  align-self: start;
-  /* aligns to top of cell */
-  justify-self: end;
-  /* aligns to right of cell */
-
-  /* OVERFLOW INTO ROW 2 */
-  margin-top: -5%;
-  /* pulls up and allows ~15% overflow into row 2 */
-  padding-right: 0;
-
-
-  /* STACKING & INTERACTION */
   z-index: 10;
-  /* appears above all other elements */
   pointer-events: none;
-  /* clicks pass through to elements below */
   user-select: none;
-  /* prevents selection */
-
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To extend more into row 2: increase negative margin-top
-     - To extend less into row 2: decrease negative margin-top (closer to 0)
-     - To shift left: add negative margin-right
-     - To shift right: add positive margin-right
-     - To make larger: increase width percentage
-     - To make smaller: decrease width percentage
-     - To move down: decrease negative margin-top or add positive margin-top */
 }
 
 /* =========================
-   GALLERY WRAPPER
-   Uses CSS subgrid technique to make frame tiles direct grid children
-   ========================= */
-.gallery {
-  display: contents;
-  /* removes this element from layout, making children direct grid items */
-
-  /* NOTE: This wrapper exists in the HTML but doesn't affect layout.
-     All .tile children inside .gallery act as direct children of .dashboard grid */
-}
-
-/* =========================
-   TILE BASE STYLING
-   Shared styles for all frame elements
+   TILE BASE STYLES
    ========================= */
 .tile {
-  position: relative;
-  /* allows absolute positioning of child elements */
-
-  /* Individual tile positioning is defined in sections below */
-}
-
-/* =========================
-   MR BEDFORT FONT CLASS
-   Cursive handwriting font for all dashboard text
-   ========================= */
-.mr-bedfort-regular {
-  font-family: "Mr Bedfort", cursive;
-  font-weight: 400;
-  font-style: normal;
+  position: absolute;
 }
 
 .tile-frame-wrapper {
@@ -236,488 +111,106 @@
   font-weight: 400;
 }
 
-/* ======================
-   TILE POSITIONS & SIZES
-   Grid-based positioning
-   ====================== */
-
 /* =========================
-   LOVE NOTE FRAME (frameLoveNote.png)
-   Grid: column 1, rows 1-2
-   Element: Ornate gold landscape frame with "love note" text
-   Key positioning: Upper third in row 1, bottom edge aligns with row 2/3 boundary
+   LOVE NOTE FRAME
    ========================= */
 .tile-lovenote {
-  /* GRID POSITIONING */
-  grid-column: 1;
-  /* occupies column 1 (left column) */
-  grid-row: 1 / 3;
-  /* spans from row 1 to row 3 (rows 1 and 2) */
-
-  /* LAYOUT & ALIGNMENT */
-  display: flex;
-  align-items: flex-start;
-  /* aligns frame to top of grid area */
-
-  /* VERTICAL POSITIONING */
-  padding-top: 10%;
-  /* pushes frame down slightly so upper third is in row 1 */
-
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To move up: decrease padding-top
-     - To move down: increase padding-top
-     - To shift left: add padding-right
-     - To shift right: add padding-left
-     - To align bottom with row 2/3 line: adjust padding-top
-     - To change vertical span: modify grid-row values */
+  top: 37%;
+  right: 3%;
+  width: 28%;
+  height: 40%;
 }
 
-/* Love Note frame size */
-.tile-lovenote .tile-frame-wrapper {
-  width: 80%;
-  /* uses 95% of grid cell width */
-  max-height: 100%;
-  /* doesn't exceed 95% of grid cell height */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make frame larger: increase width/max-height percentages
-     - To make frame smaller: decrease width/max-height percentages */
-}
-
-/* Love Note text size */
 .tile-lovenote .tile-label {
   font-size: 2.8rem;
-  /* large italic text */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make text larger: increase font-size
-     - To make text smaller: decrease font-size */
 }
 
 /* =========================
-   GAME FRAME (frameGame.png)
-   Grid: column 1, row 3
-   Element: Gold horizontal frame with "game" text in bottom-left position
+   GAME FRAME
    ========================= */
 .tile-game {
-  /* GRID POSITIONING */
-  grid-column: 1;
-  /* occupies column 1 (left column) */
-  grid-row: 3;
-  /* occupies row 3 (third row) */
-
-  /* LAYOUT & ALIGNMENT */
-  display: flex;
-  align-items: center;
-  /* vertically centers frame in cell */
-  padding-top: -20%;
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To shift up: use align-items: flex-start or add padding-bottom
-     - To shift down: use align-items: flex-end or add padding-top
-     - To shift left: add padding-right
-     - To shift right: add padding-left
-     - To move to different row: change grid-row value */
+  top: 52%;
+  left: 4%;
+  width: 28%;
+  height: 44%;
 }
 
-/* Game frame size */
-.tile-game .tile-frame-wrapper {
-  width: 150%;
-  /* uses 95% of grid cell width */
-  max-height: 80%;
-  /* limited to 80% of cell height (wider than tall) */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make frame larger: increase width/max-height percentages
-     - To make frame smaller: decrease width/max-height percentages */
-}
-
-/* Game text size */
 .tile-game .tile-label {
   font-size: 2.4rem;
-  /* medium-large italic text */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make text larger: increase font-size
-     - To make text smaller: decrease font-size */
 }
 
 /* =========================
-   WEATHER FRAME (frameWeather.png)
-   Grid: column 2, rows 2-4
-   Element: Tall beaded/studded gold frame with weather info
-   Key positioning: Center column, stops at 3/4 mark of row 4
-   Contains: "Weather" title, "H:7 L:0" temp, "wear a jacket my love" message
+   WEATHER FRAME
    ========================= */
 .tile-weather {
-  /* GRID POSITIONING */
-  grid-column: 2;
-  /* occupies column 2 (center column) */
-  grid-row: 2 / 5;
-  /* spans from row 2 to row 5 (rows 2, 3, and 4) */
-
-  /* LAYOUT & ALIGNMENT */
-  display: flex;
-  align-items: flex-start;
-  /* aligns frame to top of grid area */
-
-  /* BOTTOM CONSTRAINT */
-  padding-bottom: 25%;
-  /* Creates space at bottom, ensuring frame stops at 3/4 of row 4 */
-  margin-top: -80%;
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To make frame taller: decrease padding-bottom
-     - To make frame shorter: increase padding-bottom
-     - To stop exactly at 3/4 of row 4: adjust padding-bottom (25% = 1/4 of space)
-     - To shift up: add margin-top or padding-top
-     - To shift left/right: add margin-left/margin-right
-     - To change vertical span: modify grid-row values */
+  top: 32%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28%;
+  height: 55%;
 }
 
-/* Weather frame size */
-.tile-weather .tile-frame-wrapper {
-  width: 90%;
-  /* uses 90% of grid cell width */
-  max-height: 100%;
-  /* can use full available height (limited by padding-bottom) */
-  margin: 0 auto;
-  /* centers frame horizontally */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make frame wider: increase width percentage
-     - To make frame narrower: decrease width percentage
-     - To shift frame left: change margin to '0 auto 0 0'
-     - To shift frame right: change margin to '0 0 0 auto' */
-}
-
-/* =========================
-   PIC OF US FRAME (framePic.png)
-   Grid: column 3, rows 2-4
-   Element: Simple thin gold square frame with "pic of us" label and "Us in HMB" caption
-   Key positioning: Right column, stops at 3/4 mark of row 4
-   ========================= */
-.tile-pic {
-  /* GRID POSITIONING */
-  grid-column: 3;
-  /* occupies column 3 (right column) */
-  grid-row: 1 / 5;
-  /* spans from row 2 to row 5 (rows 2, 3, and 4) */
-
-  /* LAYOUT & ALIGNMENT */
-  display: flex;
-  flex-direction: column;
-  /* stacks frame and caption vertically */
-  align-items: center;
-  /* centers content horizontally */
-
-  /* VERTICAL POSITIONING */
-  padding-top: 40%;
-  /* adds space at top */
-  /* padding-bottom: 25%; */
-  /* ensures frame doesn't go past 3/4 mark of row 4 */
-
-  /* MANUAL POSITIONING ADJUSTMENTS:
-     - To move frame up: decrease padding-top
-     - To move frame down: increase padding-top
-     - To make frame taller: decrease padding-bottom
-     - To ensure stop at 3/4 of row 4: keep padding-bottom at 25%
-     - To shift left: add padding-right
-     - To shift right: add padding-left
-     - To change vertical span: modify grid-row values */
-}
-
-/* Pic frame size */
-.tile-pic .tile-frame-wrapper {
-  width: 100%;
-  /* uses 85% of grid cell width */
-  max-height: 70%;
-  /* limited to 70% of available height (accounts for caption) */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make frame larger: increase width/max-height percentages
-     - To make frame smaller: decrease width/max-height percentages
-     - To leave more room for caption: decrease max-height */
-}
-
-/* Pic label text size */
-.tile-pic .tile-label-pic {
-  font-size: 2.6rem;
-  /* large italic text */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make text larger: increase font-size
-     - To make text smaller: decrease font-size */
-}
-
-/* =========================
-   WEATHER FRAME - CONTENT STYLING
-   Text content inside the weather frame
-   ========================= */
+/* Weather content styling */
 .tile-content-weather {
   flex-direction: column;
-  /* stacks title, temp, and message vertically */
   gap: 0.3rem;
-  /* small space between elements */
   padding: 18% 12%;
-  /* inset from frame edges */
   text-align: center;
-  /* centers all text */
-
-  /* MANUAL ADJUSTMENTS:
-     - To move content down: increase top padding value
-     - To move content up: decrease top padding value
-     - To move content inward: increase left/right padding (12%)
-     - To space elements more: increase gap value */
 }
 
-/* Weather "Weather" title */
 .weather-title {
   font-family: "Mr Bedfort", cursive;
-  /* Mr Bedfort cursive font */
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-text);
   margin-bottom: 0.1rem;
-
-  /* MANUAL ADJUSTMENTS:
-     - To make larger: increase font-size
-     - To make bolder: increase font-weight */
 }
 
-/* Weather temperature (H:7 L:0) */
 .weather-temp {
   font-family: "Mr Bedfort", cursive;
-  /* Mr Bedfort cursive font */
   font-size: 1.15rem;
   color: var(--color-text);
   letter-spacing: 0.08em;
-  /* slight letter spacing */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make larger: increase font-size
-     - To adjust spacing: modify letter-spacing */
 }
 
-/* Weather message ("wear a jacket my love") */
 .weather-message {
   font-family: "Mr Bedfort", cursive;
-  /* Mr Bedfort cursive font */
   font-style: normal;
   font-size: 1.1rem;
   color: var(--color-text);
   line-height: 1.7;
-  /* generous line spacing */
-  /* letter-spacing: 0em; */
-  /* wide letter spacing for aesthetic */
   margin-top: 0.5rem;
-  /* space above message */
-
-  /* MANUAL ADJUSTMENTS:
-     - To make text larger: increase font-size
-     - To tighten letter spacing: decrease letter-spacing
-     - To adjust line height: modify line-height
-     - To move message down: increase margin-top */
 }
 
 /* =========================
-   PHOTO FRAME - CAPTION STYLING
-   "Us in HMB" caption below pic of us frame
+   PIC OF US FRAME
    ========================= */
-.tile-caption {
+.tile-pic {
+  top: 3%;
+  left: 4%;
+  width: 26%;
+  height: 42%;
+}
+
+.tile-label-pic {
+  font-size: 2.6rem;
+}
+
+/* =========================
+   US IN HMB CAPTION
+   Plain text below pic of us frame
+   ========================= */
+.dashboard-caption-hmb {
+  position: absolute;
+  top: 45%;
+  left: 4%;
+  width: 26%;
   text-align: center;
+
   font-family: "Mr Bedfort", cursive;
-  /* Mr Bedfort cursive font */
-  font-style: normal;
-  font-size: 1.1rem;
+  font-weight: 400;
+  font-size: 1.5rem;
   color: var(--color-text);
-  margin-top: -7rem;
-  /* space between frame and caption */
-  letter-spacing: 0.01em;
-  /* letter spacing for aesthetic */
   line-height: 1.5;
-  /* line height for multi-line text */
-
-  /* MANUAL ADJUSTMENTS:
-     - To move caption closer to frame: decrease margin-top
-     - To move caption farther: increase margin-top
-     - To make text larger: increase font-size
-     - To adjust letter spacing: modify letter-spacing */
-}
-
-/* ================================================================================
-   RESPONSIVE BREAKPOINTS
-   ================================================================================ */
-
-/* =========================
-   TABLET LAYOUT (screens ≤ 1100px)
-   Grid changes to: 2 columns × 5 rows (auto-sized)
-   ========================= */
-@media (max-width: 1100px) {
-
-  /* GRID STRUCTURE - Tablet */
-  .dashboard {
-    grid-template-columns: 1fr 1fr;
-    /* 2 equal columns */
-    grid-template-rows: auto auto auto auto auto;
-    /* 5 auto-sized rows */
-    gap: 1.5rem;
-    /* increased gap */
-    padding: 1.5rem;
-    /* reduced padding */
-  }
-
-  /* DATE - Tablet positioning: spans both columns, row 1 */
-  .dashboard-date {
-    grid-column: 1 / 3;
-    /* spans both columns */
-    grid-row: 1;
-    /* top row */
-    font-size: 2.2rem;
-    /* smaller font */
-  }
-
-  /* CHERRY BLOSSOM - Tablet positioning: column 2, row 1 */
-  .dashboard-blossom {
-    grid-column: 2;
-    /* right column */
-    grid-row: 1;
-    /* top row, overlaps with date */
-    width: 60%;
-    /* smaller size */
-    margin-top: -10%;
-    /* less overflow */
-  }
-
-  /* LOVE NOTE - Tablet positioning: column 1, row 2 */
-  .tile-lovenote {
-    grid-column: 1;
-    /* left column */
-    grid-row: 2;
-    /* second row */
-    padding-top: 0;
-    /* remove top padding */
-  }
-
-  /* GAME - Tablet positioning: column 1, row 3 */
-  .tile-game {
-    grid-column: 1;
-    /* left column */
-    grid-row: 3;
-    /* third row */
-  }
-
-  /* WEATHER - Tablet positioning: column 2, rows 2-3 */
-  .tile-weather {
-    grid-column: 2;
-    /* right column */
-    grid-row: 2 / 4;
-    /* spans rows 2-3 */
-    padding-bottom: 0;
-    /* remove bottom constraint */
-  }
-
-  /* PIC - Tablet positioning: spans both columns, row 4 */
-  .tile-pic {
-    grid-column: 1 / 3;
-    /* spans both columns */
-    grid-row: 4;
-    /* fourth row */
-    padding-top: 0;
-    /* remove top padding */
-    padding-bottom: 0;
-    /* remove bottom padding */
-  }
-
-  .tile-pic .tile-frame-wrapper {
-    width: 60%;
-    /* narrower frame on tablet */
-  }
-}
-
-/* =========================
-   MOBILE LAYOUT (screens ≤ 600px)
-   Grid changes to: 1 column × 6 rows (auto-sized)
-   All elements stack vertically
-   ========================= */
-@media (max-width: 600px) {
-
-  /* GRID STRUCTURE - Mobile */
-  .dashboard {
-    grid-template-columns: 1fr;
-    /* single column */
-    grid-template-rows: auto auto auto auto auto auto;
-    /* 6 auto-sized rows */
-    padding: 1rem;
-    /* minimal padding */
-    gap: 1.5rem;
-    /* consistent gap */
-  }
-
-  /* DATE - Mobile positioning: column 1, row 1 */
-  .dashboard-date {
-    grid-column: 1;
-    /* single column */
-    grid-row: 1;
-    /* top row */
-    font-size: 1.8rem;
-    /* smaller font */
-  }
-
-  /* CHERRY BLOSSOM - Mobile positioning: column 1, row 1 (overlaps date) */
-  .dashboard-blossom {
-    grid-column: 1;
-    /* single column */
-    grid-row: 1;
-    /* top row, overlaps with date */
-    width: 40%;
-    /* smaller size */
-    margin-top: -5%;
-    /* minimal overflow */
-  }
-
-  /* LOVE NOTE - Mobile positioning: column 1, row 2 */
-  .tile-lovenote {
-    grid-column: 1;
-    /* single column */
-    grid-row: 2;
-    /* second row */
-  }
-
-  /* GAME - Mobile positioning: column 1, row 3 */
-  .tile-game {
-    grid-column: 1;
-    /* single column */
-    grid-row: 3;
-    /* third row */
-  }
-
-  /* WEATHER - Mobile positioning: column 1, row 4 */
-  .tile-weather {
-    grid-column: 1;
-    /* single column */
-    grid-row: 4;
-    /* fourth row */
-  }
-
-  /* PIC - Mobile positioning: column 1, row 5 */
-  .tile-pic {
-    grid-column: 1;
-    /* single column */
-    grid-row: 5;
-    /* fifth row */
-  }
-
-  /* FRAME SIZES - Mobile adjustments */
-  .tile-lovenote .tile-frame-wrapper,
-  .tile-game .tile-frame-wrapper {
-    width: 100%;
-    /* full width on mobile */
-    max-height: none;
-    /* no height restriction */
-  }
-
-  .tile-weather .tile-frame-wrapper,
-  .tile-pic .tile-frame-wrapper {
-    width: 80%;
-    /* slightly narrower */
-  }
+  user-select: none;
 }
