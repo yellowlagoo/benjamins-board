@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const API_URL =
   'https://api.open-meteo.com/v1/forecast?latitude=49.253657&longitude=-123.164873&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&temperature_unit=celsius&timezone=America/Los_Angeles';
+
+const REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
 
 const WMO_CODES = {
   0: 'Clear Sky',
@@ -34,20 +36,20 @@ const WMO_CODES = {
   99: 'Heavy Thunderstorm',
 };
 
-function getWeatherMessage(code) {
-  if (code <= 1) return 'e n j o y\nt h e\ns u n s h i n e';
-  if (code <= 3) return 'a\nc l o u d y\nd a y';
-  if (code <= 48) return 'i t s\na\nb i t\nf o g g y';
-  if (code <= 67) return 'w e a r\na\nj a c k e t\nm y\nl o v e';
-  if (code <= 86) return 'b u n d l e\nu p\nm y\nl o v e';
-  return 'w e a r\na\nj a c k e t\nm y\nl o v e';
+function formatTime(date) {
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: 'America/Los_Angeles',
+  });
 }
 
 export default function WeatherWidget() {
   const [weather, setWeather] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
+  const fetchWeather = useCallback(() => {
     fetch(API_URL)
       .then((res) => {
         if (!res.ok) throw new Error('fetch failed');
@@ -60,11 +62,19 @@ export default function WeatherWidget() {
           high: Math.round(data.daily.temperature_2m_max[0]),
           low: Math.round(data.daily.temperature_2m_min[0]),
         });
+        setLastUpdated(new Date());
+        setError(false);
       })
       .catch(() => setError(true));
   }, []);
 
-  if (error) {
+  useEffect(() => {
+    fetchWeather();
+    const id = setInterval(fetchWeather, REFRESH_INTERVAL);
+    return () => clearInterval(id);
+  }, [fetchWeather]);
+
+  if (error && !weather) {
     return (
       <>
         <p className="weather-title">Weather</p>
@@ -90,7 +100,9 @@ export default function WeatherWidget() {
       <p className="weather-temp">
         {weather.temp}°C &nbsp; H:{weather.high} L:{weather.low}
       </p>
-      <p className="weather-message">{getWeatherMessage(weather.code)}</p>
+      {lastUpdated && (
+        <p className="weather-updated">Last updated: {formatTime(lastUpdated)}</p>
+      )}
     </>
   );
 }
