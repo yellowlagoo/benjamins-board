@@ -9,7 +9,8 @@
       "Bash(sips:*)",
       "Bash(dig:*)",
       "WebFetch(domain:benjaminsboard.com)",
-      "Bash(git -C /Users/karinaasanbekova/git/benjamins-board log --oneline -5)"
+      "Bash(git -C /Users/karinaasanbekova/git/benjamins-board log --oneline -5)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
