@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const API_URL =
-  'https://api.open-meteo.com/v1/forecast?latitude=49.253657&longitude=-123.164873&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&temperature_unit=celsius&timezone=America/Los_Angeles';
+  'https://api.open-meteo.com/v1/forecast?latitude=49.253657&longitude=-123.164873&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&temperature_unit=celsius&timezone=America/Los_Angeles';
 
 const REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
+const GOLDEN_WINDOW = 30 * 60 * 1000; // 30 minutes around sunrise/sunset
 
 const WMO_CODES = {
   0: 'Clear Sky',
@@ -44,6 +45,53 @@ function formatTime(date) {
   });
 }
 
+// The API returns sunrise/sunset as "YYYY-MM-DDTHH:MM" in Pacific time
+// (because timezone=America/Los_Angeles). Parse them with an explicit offset
+// so the browser doesn't misinterpret them as UTC.
+function parsePacific(isoString) {
+  // Get the current Pacific offset (PST = -08:00, PDT = -07:00)
+  const probe = new Date(isoString + 'Z'); // treat as UTC temporarily
+  const pacificStr = probe.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+  const pacificDate = new Date(pacificStr);
+  const offsetMs = probe.getTime() - pacificDate.getTime();
+  // Apply offset: the isoString represents Pacific local time
+  return new Date(new Date(isoString + 'Z').getTime() + offsetMs);
+}
+
+function formatSunTime(isoString) {
+  const [, timePart] = isoString.split('T');
+  const [hourStr, minuteStr] = timePart.split(':');
+  const hour = parseInt(hourStr, 10);
+  const minute = minuteStr;
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const h12 = hour % 12 || 12;
+  return `${h12}:${minute} ${ampm}`;
+}
+
+function getWeatherTheme(now, sunrise, sunset, code) {
+  const nowMs = now.getTime();
+  const sunriseMs = sunrise.getTime();
+  const sunsetMs = sunset.getTime();
+
+  // Golden hour: within 30 min of sunrise or sunset
+  if (
+    Math.abs(nowMs - sunriseMs) <= GOLDEN_WINDOW ||
+    Math.abs(nowMs - sunsetMs) <= GOLDEN_WINDOW
+  ) {
+    return 'golden';
+  }
+
+  // Night: before sunrise or after sunset
+  if (nowMs < sunriseMs || nowMs > sunsetMs) {
+    return 'night';
+  }
+
+  // Daytime: pick by weather code
+  if (code <= 1) return 'clear';
+  if (code <= 3 || code === 45 || code === 48) return 'cloudy';
+  return 'rain';
+}
+
 export default function WeatherWidget() {
   const [weather, setWeather] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -61,6 +109,10 @@ export default function WeatherWidget() {
           code: data.current.weather_code,
           high: Math.round(data.daily.temperature_2m_max[0]),
           low: Math.round(data.daily.temperature_2m_min[0]),
+          sunriseRaw: data.daily.sunrise[0],
+          sunsetRaw: data.daily.sunset[0],
+          sunrise: parsePacific(data.daily.sunrise[0]),
+          sunset: parsePacific(data.daily.sunset[0]),
         });
         setLastUpdated(new Date());
         setError(false);
@@ -76,33 +128,37 @@ export default function WeatherWidget() {
 
   if (error && !weather) {
     return (
-      <>
+      <div className="weather-bg" data-theme="night">
         <p className="weather-title">Weather</p>
         <p className="weather-temp">unavailable</p>
-      </>
+      </div>
     );
   }
 
   if (!weather) {
     return (
-      <>
+      <div className="weather-bg" data-theme="night">
         <p className="weather-title">Weather</p>
         <p className="weather-temp">loading...</p>
-      </>
+      </div>
     );
   }
 
   const condition = WMO_CODES[weather.code] ?? 'Unknown';
+  const theme = getWeatherTheme(new Date(), weather.sunrise, weather.sunset, weather.code);
 
   return (
-    <>
+    <div className="weather-bg" data-theme={theme}>
       <p className="weather-title">{condition}</p>
       <p className="weather-temp">
         {weather.temp}°C &nbsp; H:{weather.high} L:{weather.low}
       </p>
+      <p className="weather-sun">
+        ☀ {formatSunTime(weather.sunriseRaw)} &nbsp; ☽ {formatSunTime(weather.sunsetRaw)}
+      </p>
       {lastUpdated && (
         <p className="weather-updated">Last updated: {formatTime(lastUpdated)}</p>
       )}
-    </>
+    </div>
   );
 }
