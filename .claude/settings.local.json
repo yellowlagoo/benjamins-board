@@ -7,7 +7,9 @@
       "Bash(git -C /Users/karinaasanbekova/git/benjamins-board diff HEAD -- src/pages/Landing.jsx)",
       "Bash(git -C /Users/karinaasanbekova/git/benjamins-board show HEAD:src/pages/Landing.jsx)",
       "Bash(sips:*)",
-      "Bash(dig:*)"
+      "Bash(dig:*)",
+      "WebFetch(domain:benjaminsboard.com)",
+      "Bash(git -C /Users/karinaasanbekova/git/benjamins-board log --oneline -5)"
     ],
     "deny": [],
     "ask": []
