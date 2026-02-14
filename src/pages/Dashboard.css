@@ -147,15 +147,15 @@
   left: 50%;
   transform: translateX(-50%);
   width: 28%;
-  height: 55%;
+  aspect-ratio: 349 / 488;
 }
 
 /* Weather content sits inset inside the frame border, on top of the frame image.
    Layering: frame image (bottom) → colored background (middle) → text (top) */
 .tile-content-weather {
   top: 15.5%;
-  left: 13.5%;
-  right: 16%;
+  left: 7%;
+  right: 10%;
   bottom: 6.5%;
   z-index: 2;
   flex-direction: column;
