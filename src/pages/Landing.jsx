@@ -8,11 +8,16 @@ const SEARCH_URL =
   'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=painting';
 const OBJECT_URL =
   'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
-const CACHE_KEY = 'met-daily-artwork';
-const MAX_RETRIES = 5;
+const CACHE_KEY = 'met-daily-artwork-v2';
+const MAX_RETRIES = 10;
+const RETRY_STRIDE = 7919; // large prime to spread retries across the array
 
 function getTodayString() {
-  return new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
 }
 
 function getDayIndex() {
@@ -38,10 +43,21 @@ function saveCache(artwork) {
   } catch {}
 }
 
+// The Met CDN serves generic placeholder JPEGs (e.g. "image-number-only.jpg")
+// for objects without a real photograph. These are valid images but show
+// "consult primary record" text instead of artwork.
+const PLACEHOLDER_NAMES = ['image-number-only', 'no-image', 'placeholder'];
+
+function isPlaceholderUrl(url) {
+  const filename = url.split('/').pop().toLowerCase();
+  return PLACEHOLDER_NAMES.some((name) => filename.includes(name));
+}
+
 function validateImage(url) {
+  if (isPlaceholderUrl(url)) return Promise.resolve(false);
   return new Promise((resolve) => {
     const img = new Image();
-    img.onload = () => resolve(true);
+    img.onload = () => resolve(img.naturalWidth >= 200 && img.naturalHeight >= 200);
     img.onerror = () => resolve(false);
     img.src = url;
   });
@@ -52,13 +68,17 @@ export default function Landing() {
   const [artwork, setArtwork] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   const fetchArtwork = useCallback(async () => {
     const cached = loadCache();
     if (cached) {
-      setArtwork(cached);
-      setLoading(false);
-      return;
+      const stillValid = await validateImage(cached.primaryImage);
+      if (stillValid) {
+        setArtwork(cached);
+        setLoading(false);
+        return;
+      }
     }
 
     try {
@@ -73,14 +93,14 @@ export default function Landing() {
       const dayIndex = getDayIndex();
 
       for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-        const idx = (dayIndex + attempt) % ids.length;
+        const idx = (dayIndex + attempt * RETRY_STRIDE) % ids.length;
         const objectID = ids[idx];
 
         try {
           const objRes = await fetch(OBJECT_URL + objectID);
           const objData = await objRes.json();
 
-          if (objData.primaryImage) {
+          if (objData.primaryImage && objData.isPublicDomain) {
             const valid = await validateImage(objData.primaryImage);
             if (valid) {
               const artworkData = {
@@ -104,6 +124,7 @@ export default function Landing() {
       }
     } catch {}
 
+    setFailed(true);
     setLoading(false);
   }, []);
 
@@ -136,6 +157,10 @@ export default function Landing() {
               alt={artwork.title}
               className={`landing-artwork-img ${imageLoaded ? 'loaded' : ''}`}
               onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                setArtwork(null);
+                setFailed(true);
+              }}
             />
           )}
 
@@ -143,6 +168,15 @@ export default function Landing() {
           {loading && (
             <div className="landing-artwork-loading">
               <div className="landing-artwork-spinner" />
+            </div>
+          )}
+
+          {/* Fallback when artwork unavailable */}
+          {failed && !artwork && (
+            <div className="landing-artwork-fallback">
+              <span className="landing-artwork-fallback-text">
+                no artwork today
+              </span>
             </div>
           )}
 
@@ -193,7 +227,7 @@ export default function Landing() {
 
       <div className="landing-text">
         <div className="landing-text-benjamins">Benjamin's</div>
-        <div className="landing-text-board">BOARD</div>
+        <div className="landing-text-board">Board</div>
       </div>
     </div>
   );

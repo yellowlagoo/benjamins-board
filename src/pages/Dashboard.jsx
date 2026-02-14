@@ -3,6 +3,7 @@ import frameLoveNote from '../assets/frames/frameLoveNote.png';
 import frameWeather from '../assets/frames/frameWeather.png';
 import frameGame from '../assets/frames/frameGame.png';
 import framePic from '../assets/frames/framePic.png';
+import WeatherWidget from '../components/WeatherWidget';
 import './Dashboard.css';
 
 function getFormattedDate() {
@@ -56,13 +57,7 @@ export default function Dashboard() {
         <div className="tile-frame-wrapper">
           <img src={frameWeather} alt="" className="tile-frame" />
           <div className="tile-content tile-content-weather">
-            <p className="weather-title">Weather</p>
-            <p className="weather-temp">H:7 L:0</p>
-            <p className="weather-message">
-              w e a r&nbsp;&nbsp;a<br />
-              j a c k e t<br />
-              m y&nbsp;&nbsp;l o v e
-            </p>
+            <WeatherWidget />
           </div>
         </div>
       </div>

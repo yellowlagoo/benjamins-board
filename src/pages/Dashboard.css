@@ -101,7 +101,7 @@
 
 /* --- Labels --- */
 .tile-label {
-  font-family: "Mr Bedfort", cursive;
+  font-family: "Luxurious Roman", cursive;
   color: var(--color-text);
   user-select: none;
 }
@@ -159,7 +159,7 @@
 }
 
 .weather-title {
-  font-family: "Mr Bedfort", cursive;
+  font-family: "Luxurious Roman", cursive;
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-text);
@@ -167,14 +167,14 @@
 }
 
 .weather-temp {
-  font-family: "Mr Bedfort", cursive;
+  font-family: "Luxurious Roman", cursive;
   font-size: 1.15rem;
   color: var(--color-text);
   letter-spacing: 0.08em;
 }
 
 .weather-message {
-  font-family: "Mr Bedfort", cursive;
+  font-family: "Luxurious Roman", cursive;
   font-style: normal;
   font-size: 1.1rem;
   color: var(--color-text);
@@ -207,7 +207,7 @@
   width: 26%;
   text-align: center;
 
-  font-family: "Mr Bedfort", cursive;
+  font-family: "Ballet", cursive;
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-text);

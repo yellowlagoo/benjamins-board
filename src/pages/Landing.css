@@ -125,6 +125,32 @@
 }
 
 /* =========================
+   FALLBACK STATE
+   Shown inside the frame when artwork is unavailable.
+   ========================= */
+.landing-artwork-fallback {
+  position: absolute;
+  top: 14%;
+  left: 13%;
+  right: 13%;
+  bottom: 11%;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f0e8;
+}
+
+.landing-artwork-fallback-text {
+  font-family: 'Luxurious Roman', serif;
+  font-size: 18px;
+  color: #c4a96a;
+  letter-spacing: 0.15em;
+  user-select: none;
+}
+
+/* =========================
    HOVER OVERLAY
    Semi-transparent info overlay, clipped to artwork area.
    ========================= */
@@ -244,13 +270,13 @@
 .landing-text-board {
   font-family: 'Luxurious Roman', serif;
   font-weight: 400;
-  font-size: 140px;
+  font-size: 160px;
   color: #1a1a1a;
   line-height: 1;
-  letter-spacing: 0.15em;
+  letter-spacing: 0em;
   text-transform: uppercase;
   user-select: none;
   margin-top: -20px;
   align-self: flex-start;
-  margin-left: -80px;
+  margin-left: -40%;
 }
