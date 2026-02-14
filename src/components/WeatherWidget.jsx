@@ -1,8 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const API_URL =
-  'https://api.open-meteo.com/v1/forecast?latitude=49.253657&longitude=-123.164873&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&temperature_unit=celsius&timezone=America/Los_Angeles';
+const VAN_LAT = 49.253657;
+const VAN_LONG = -123.164873;
+const MTNVIEW_LAT = 37.389806;
+const MTNVIEW_LONG = -122.093958;
+const TENT_URL = (lat, long) =>
+  `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&temperature_unit=celsius&timezone=America/Los_Angeles`;
 
+const API_URL = TENT_URL(MTNVIEW_LAT, MTNVIEW_LONG);
 const REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
 const GOLDEN_WINDOW = 30 * 60 * 1000; // 30 minutes around sunrise/sunset
 

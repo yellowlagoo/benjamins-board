@@ -49,7 +49,7 @@
    ========================= */
 .landing-frame-container {
   position: relative;
-  width: 462px;
+  width: 40vw;
   /* aspect-ratio matches the frame image proportions */
   aspect-ratio: 1.1 / 1;
   flex-shrink: 0;
@@ -236,7 +236,7 @@
    GOOSE / BIRD
    ========================= */
 .landing-goose-img {
-  width: 420px;
+  width: 40vw;
   height: auto;
   display: block;
   object-fit: contain;
@@ -250,7 +250,7 @@
 .landing-text {
   position: absolute;
   bottom: 3vh;
-  right: 30px;
+  right: 2vw;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -259,8 +259,8 @@
 
 .landing-text-benjamins {
   font-family: 'Ballet', cursive;
-  font-size: 240px;
-  color: #1a1a1a;
+  font-size: 20vw;
+  color: #064232;
   line-height: 0.85;
   letter-spacing: 0.01em;
   user-select: none;
@@ -270,7 +270,7 @@
 .landing-text-board {
   font-family: 'Luxurious Roman', serif;
   font-weight: 400;
-  font-size: 160px;
+  font-size: 16vw;
   color: #1a1a1a;
   line-height: 1;
   letter-spacing: 0em;

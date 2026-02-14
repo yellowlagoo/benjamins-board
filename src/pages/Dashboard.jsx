@@ -3,8 +3,13 @@ import frameLoveNote from '../assets/frames/frameLoveNote.png';
 import frameWeather from '../assets/frames/frameWeather.png';
 import frameGame from '../assets/frames/frameGame.png';
 import framePic from '../assets/frames/framePic.png';
+import { useState } from 'react';
 import WeatherWidget from '../components/WeatherWidget';
+import GameWidget from '../components/GameWidget';
 import './Dashboard.css';
+import gameGif from '../assets/penguin.gif';
+import LoveNoteWidget from '../components/LoveNoteWidget';
+import useDailyPic from '../components/PicWidget';
 
 function getFormattedDate() {
   const now = new Date();
@@ -18,6 +23,8 @@ function getFormattedDate() {
 
 export default function Dashboard() {
   const today = getFormattedDate();
+  const [gameOpen, setGameOpen] = useState(false);
+  const { photo, caption } = useDailyPic();
 
   return (
     <div className="dashboard">
@@ -36,18 +43,23 @@ export default function Dashboard() {
       <div className="tile tile-lovenote">
         <div className="tile-frame-wrapper">
           <img src={frameLoveNote} alt="" className="tile-frame" />
-          <div className="tile-content">
-            <p className="tile-label tile-label-script">love note</p>
+          <div className="tile-content title-content-lovenote">
+            <LoveNoteWidget />
           </div>
         </div>
       </div>
 
+
       {/* Game — bottom left */}
-      <div className="tile tile-game">
+      <div
+        className="tile tile-game"
+        onClick={() => setGameOpen(true)}
+      >
         <div className="tile-frame-wrapper">
           <img src={frameGame} alt="" className="tile-frame" />
-          <div className="tile-content">
-            <p className="tile-label tile-label-script">game</p>
+          <div className="tile-content tile-content-game">
+            <img src={gameGif} alt="" className="game-penguin-img" />
+            <p className="tile-label tile-label-script game-label"></p>
           </div>
         </div>
       </div>
@@ -62,23 +74,20 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Pic of us — right side upper */}
+      {/* Pic of us — top left */}
       <div className="tile tile-pic">
         <div className="tile-frame-wrapper">
           <img src={framePic} alt="" className="tile-frame" />
-          <div className="tile-content">
-            <p className="tile-label tile-label-script tile-label-pic">
-              pic of us
-            </p>
+          <div className="tile-content tile-content-pic">
+            {photo && <img src={photo} alt={caption} className="pic-widget-photo" />}
           </div>
         </div>
+        {caption && (
+          <p className="pic-widget-caption">{caption}</p>
+        )}
       </div>
 
-      {/* Us in HMB — caption below pic of us */}
-      <p className="dashboard-caption-hmb">
-        Us in<br />
-        HMB
-      </p>
+      <GameWidget open={gameOpen} onClose={() => setGameOpen(false)} />
     </div>
   );
 }

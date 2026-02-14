@@ -38,15 +38,15 @@
    ========================= */
 .dashboard-date {
   position: absolute;
-  top: 10%;
+  top: 10.5%;
   left: 33%;
   width: 30%;
   text-align: center;
 
   font-family: "Ballet", cursive;
   font-weight: 400;
-  font-size: 5rem;
-  color: var(--color-text);
+  font-size: 6.5vw;
+  color: #064232;
   letter-spacing: 0.02em;
 }
 
@@ -102,7 +102,7 @@
 /* --- Labels --- */
 .tile-label {
   font-family: "Luxurious Roman", cursive;
-  color: var(--color-text);
+  color: #064232;
   user-select: none;
 }
 
@@ -119,11 +119,59 @@
   right: 3%;
   width: 28%;
   height: 40%;
+  z-index: 11;
 }
 
 .tile-lovenote .tile-label {
-  font-size: 2.8rem;
+  font-size: 20rem;
 }
+
+
+/* =========================
+   LOVE NOTE WIDGET
+   ========================= */
+   .love-note-content {
+    width: 80%;
+    height: 80%;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  /* Custom scrollbar for love notes */
+  .love-note-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .love-note-content::-webkit-scrollbar-track {
+    background: rgba(196, 169, 106, 0.1);
+    border-radius: 3px;
+  }
+  
+  .love-note-content::-webkit-scrollbar-thumb {
+    background: rgba(196, 169, 106, 0.4);
+    border-radius: 3px;
+  }
+  
+  .love-note-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(196, 169, 106, 0.6);
+  }
+  
+  .love-note-text {
+    font-family: "Luxurious Roman", cursive;
+    font-size: 2vw;  /* Scales with frame like weather does */
+    color: #064232;
+    line-height: 1.7;
+    text-align: center;
+    margin: 0;
+    padding: 10% 5%;
+    word-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+  }
 
 /* =========================
    GAME FRAME
@@ -133,10 +181,103 @@
   left: 4%;
   width: 28%;
   height: 44%;
+  cursor: pointer;
 }
 
 .tile-game .tile-label {
   font-size: 2.4rem;
+}
+
+.tile-content-game {
+  top: 20%;
+  left: 7%;
+  right: 8%;
+  bottom: 10%;
+  padding: 0;
+}
+
+/* Penguin GIF styling - constrained to frame */
+.game-penguin-img {
+  width: 100vw;
+  height: 12vw;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* =========================
+   GAME MODAL
+   ========================= */
+.game-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.game-modal {
+  width: 80vw;
+  height: 80vh;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+}
+
+.game-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e8e0d4;
+}
+
+.game-modal-title {
+  font-family: "Luxurious Roman", cursive;
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  letter-spacing: 0.04em;
+}
+
+.game-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #1a1a1a;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.game-modal-close:hover {
+  opacity: 1;
+}
+
+.game-modal-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+}
+
+.game-modal-fallback {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-modal-fallback p {
+  font-family: "Luxurious Roman", cursive;
+  font-size: 1.2rem;
+  color: #c4a96a;
+  letter-spacing: 0.15em;
 }
 
 /* =========================
@@ -241,28 +382,38 @@
   top: 3%;
   left: 4%;
   width: 26%;
-  height: 42%;
-}
-
-.tile-label-pic {
-  font-size: 2.6rem;
+  aspect-ratio: 393 / 398;
 }
 
 /* =========================
-   US IN HMB CAPTION
-   Plain text below pic of us frame
+   PIC WIDGET (Daily Photo)
    ========================= */
-.dashboard-caption-hmb {
-  position: absolute;
-  top: 45%;
-  left: 4%;
-  width: 26%;
-  text-align: center;
+.tile-content-pic {
+  top: 21%;
+  left: 12.5%;
+  right: 11.6%;
+  bottom: 4.6%;
+  z-index: 2;
+  padding: 0;
+  overflow: hidden;
+}
 
-  font-family: "Ballet", cursive;
-  font-weight: 400;
-  font-size: 1.5rem;
-  color: var(--color-text);
-  line-height: 1.5;
+.pic-widget-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   user-select: none;
+  -webkit-user-drag: none;
+}
+
+.pic-widget-caption {
+  width: 100%;
+  text-align: center;
+  font-family: "Luxurious Roman", cursive;
+  font-weight: 400;
+  font-size: 1.3vw;
+  color: #064232;
+  line-height: 1.4;
+  user-select: none;
+  margin: 0.5vw 0 0;
 }
