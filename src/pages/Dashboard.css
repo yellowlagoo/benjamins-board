@@ -118,7 +118,7 @@
   top: 37%;
   right: 3%;
   width: 28%;
-  height: 40%;
+  aspect-ratio: 426 / 403;
   z-index: 11;
 }
 
@@ -126,14 +126,22 @@
   font-size: 20rem;
 }
 
+.title-content-lovenote {
+  top: 25%;
+  left: 9.1%;
+  right: 9%;
+  bottom:10%;
+  z-index: 2;
+  background: #064232;
+  overflow: hidden;
+}
 
 /* =========================
    LOVE NOTE WIDGET
    ========================= */
    .love-note-content {
-    width: 80%;
-    height: 80%;
-    margin-top: 10%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,7 +171,8 @@
   .love-note-text {
     font-family: "Luxurious Roman", cursive;
     font-size: 2vw;  /* Scales with frame like weather does */
-    color: #064232;
+    color: #F5BABB;
+    font-weight: 700;
     line-height: 1.7;
     text-align: center;
     margin: 0;
@@ -180,7 +189,7 @@
   top: 52%;
   left: 4%;
   width: 28%;
-  height: 44%;
+  aspect-ratio: 433 / 300;
   cursor: pointer;
 }
 
@@ -189,11 +198,12 @@
 }
 
 .tile-content-game {
-  top: 20%;
-  left: 7%;
-  right: 8%;
-  bottom: 10%;
+  top: 23%;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
   padding: 0;
+  background: #064232;
 }
 
 /* Penguin GIF styling - constrained to frame */
